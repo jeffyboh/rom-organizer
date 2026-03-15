@@ -1,3 +1,5 @@
+[![Python application](https://github.com/jeffyboh/rom-organizer/actions/workflows/python-app.yml/badge.svg)](https://github.com/jeffyboh/rom-organizer/actions/workflows/python-app.yml)
+
 # ROM Library
 
 This repository contains a Python application for indexing ROM files and their corresponding images.
