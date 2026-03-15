@@ -175,6 +175,82 @@ The API uses standard HTTP status codes:
 
 The API automatically generates OpenAPI 3.0 specifications accessible at `/docs` (Swagger UI) and `/redoc` (ReDoc).
 
+## Testing
+
+The project includes a comprehensive test suite using pytest for Test-Driven Development (TDD).
+
+### Running Tests
+
+**Run all tests:**
+```bash
+python run_tests.py
+```
+
+**Run tests with pytest directly:**
+```bash
+pytest tests/ -v
+```
+
+**Run tests with coverage:**
+```bash
+pytest tests/ --cov=app --cov-report=html
+```
+
+**Run specific test file:**
+```bash
+pytest tests/test_systems.py -v
+```
+
+**Run specific test:**
+```bash
+pytest tests/test_systems.py::test_get_all_systems -v
+```
+
+### Test Structure
+
+```
+tests/
+├── __init__.py
+├── conftest.py          # Shared fixtures and configuration
+├── test_root.py         # Tests for root API endpoint
+└── test_systems.py      # Tests for systems API endpoints
+```
+
+### Test Fixtures
+
+- **`test_engine`**: Creates an in-memory SQLite database for testing
+- **`test_db`**: Provides a database session for each test function
+- **`client`**: FastAPI TestClient for making API requests
+- **`sample_systems`**: Pre-populated test data with sample gaming systems
+
+### Writing New Tests
+
+When adding new API endpoints, follow this TDD pattern:
+
+1. **Write the test first** (Red)
+2. **Run the test** to see it fail
+3. **Implement the code** to make the test pass (Green)
+4. **Refactor** if needed (Refactor)
+
+Example test structure:
+```python
+def test_new_endpoint(client):
+    """Test description."""
+    response = client.get("/new-endpoint")
+    assert response.status_code == 200
+    # Add more assertions...
+```
+
+### Test Coverage
+
+The test suite covers:
+- ✅ API endpoint responses
+- ✅ Error handling (400, 404 errors)
+- ✅ Database operations
+- ✅ Input validation
+- ✅ Search functionality
+- ✅ Case-insensitive operations
+
 ## Usage
 
 Run the application:

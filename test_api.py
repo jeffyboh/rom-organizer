@@ -65,6 +65,12 @@ def test_api():
             print("✅ 404 error handled correctly")
         else:
             print(f"❌ Expected 404, got {response.status_code}")
+            print(f"Response content: {response.text}")
+            try:
+                error_data = response.json()
+                print(f"Error details: {error_data}")
+            except:
+                print("Could not parse error response as JSON")
 
         print("\n🎉 All API tests completed successfully!")
         print(f"\n📖 API Documentation:")

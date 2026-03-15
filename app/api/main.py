@@ -57,48 +57,68 @@ async def root():
 
 
 @app.get("/systems", response_model=List[SystemResponse])
-async def get_all_systems(db: Session = Depends(get_db)):
+async def get_all_systems():
     """
     Get all gaming systems.
 
     Returns a list of all systems with their IDs and names.
     """
-    systems = db.query(SystemConfig).order_by(SystemConfig.system).all()
-    return systems
+    from app.core.database import get_db
+    from app.models.system import SystemConfig
+
+    db = get_db()
+    try:
+        systems = db.query(SystemConfig).order_by(SystemConfig.system).all()
+        return systems
+    finally:
+        db.close()
 
 
 @app.get("/systems/search", response_model=List[SystemResponse])
 async def search_systems(
     q: str = Query(..., description="Search query for system name"),
-    limit: Optional[int] = Query(50, description="Maximum number of results to return"),
-    db: Session = Depends(get_db)
+    limit: Optional[int] = Query(50, description="Maximum number of results to return")
 ):
     """
     Search systems by name.
 
     Performs a case-insensitive search on system names.
     """
+    from app.core.database import get_db
+    from app.models.system import SystemConfig
+
     if not q or len(q.strip()) < 2:
         raise HTTPException(
             status_code=400,
             detail="Search query must be at least 2 characters long"
         )
 
-    systems = db.query(SystemConfig).filter(
-        SystemConfig.system_name.ilike(f"%{q}%")
-    ).limit(limit).all()
+    db = get_db()
+    try:
+        systems = db.query(SystemConfig).filter(
+            SystemConfig.system_name.ilike(f"%{q}%")
+        ).limit(limit).all()
 
-    return systems
+        return systems
+    finally:
+        db.close()
 
 
 @app.get("/systems/{system_id}", response_model=SystemResponse)
-async def get_system(system_id: str, db: Session = Depends(get_db)):
+async def get_system(system_id: str):
     """
     Get a specific system by its ID.
 
     Returns detailed information about a single system.
     """
-    system = db.query(SystemConfig).filter(SystemConfig.system == system_id).first()
-    if not system:
-        raise HTTPException(status_code=404, detail="System not found")
-    return system
+    from app.core.database import get_db
+    from app.models.system import SystemConfig
+
+    db = get_db()
+    try:
+        system = db.query(SystemConfig).filter(SystemConfig.system == system_id).first()
+        if not system:
+            raise HTTPException(status_code=404, detail="System not found")
+        return system
+    finally:
+        db.close()
