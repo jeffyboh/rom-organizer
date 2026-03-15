@@ -1,0 +1,12 @@
+# ROM Library Configuration
+# This file defines the location of your ROM library and other settings
+
+# Path to your ROM library directory
+rom_library_path: "/home/jeff/retro_games/master_library/roms"
+rom_library_media_path: "/home/jeff/retro_games/master_library/media"
+
+# Logging level (DEBUG, INFO, WARNING, ERROR)
+log_level: "DEBUG"
+
+# Database configuration
+database_url: "sqlite:///rom_library.db"

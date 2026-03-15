@@ -1,0 +1,8 @@
+[project]
+name = "rom-library"
+version = "0.1.0"
+description = "ROM library indexing tool (placeholder)"
+authors = [ { name = "Jeff" } ]
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.0"
