@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
     
 permissions:
-  contents: read        # For checkout and comparing commits
+  contents: write       # For checkout and comparing commits
   pull-requests: write  # For creating/updating PR comments
 
 jobs:
