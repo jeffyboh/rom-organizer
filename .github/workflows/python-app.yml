@@ -37,3 +37,5 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+    - name: Publish Test Summary
+      uses: dariocurr/pytest-summary@main
