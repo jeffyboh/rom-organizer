@@ -5,7 +5,7 @@ ROM Library Application
 
 from app.core.config import settings
 from app.core.database import get_db
-from app.models.system import SystemConfig
+from app.models.system import System
 
 
 def main():
@@ -21,11 +21,11 @@ def main():
     # Test database connection and show some systems
     db = get_db()
     try:
-        system_count = db.query(SystemConfig).count()
+        system_count = db.query(System).count()
         print(f"Total systems in database: {system_count}")
 
         # Show first 5 systems as examples
-        systems = db.query(SystemConfig).limit(5).all()
+        systems = db.query(System).limit(5).all()
         print("\nExample systems:")
         for system in systems:
             print(f"  {system.system}: {system.system_name}")

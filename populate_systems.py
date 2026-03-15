@@ -10,7 +10,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.core.database import create_tables, get_db
-from app.models.system import SystemConfig
+from app.models.system import System
 
 
 # System data - system_id: system_name
@@ -232,19 +232,19 @@ def populate_systems():
     db = get_db()
     try:
         # Clear existing data
-        db.query(SystemConfig).delete()
+        db.query(System).delete()
         print("Cleared existing systems data.")
 
         # Insert new data
         for system, system_name in systems:
-            system_config = SystemConfig(system=system, system_name=system_name)
+            system_config = System(system=system, system_name=system_name)
             db.add(system_config)
 
         db.commit()
         print(f"Successfully populated {len(systems)} systems.")
 
         # Verify the data
-        count = db.query(SystemConfig).count()
+        count = db.query(System).count()
         print(f"Total systems in database: {count}")
 
     except Exception as e:

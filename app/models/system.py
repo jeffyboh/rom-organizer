@@ -4,8 +4,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-class SystemConfig(Base):
-    __tablename__ = 'systems'
+class System(Base):
+    __tablename__ = 'system'
 
     # 'system' is the unique identifier (Primary Key)
     system = Column(String, primary_key=True, unique=True, nullable=False)

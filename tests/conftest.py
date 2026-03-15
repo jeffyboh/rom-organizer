@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from fastapi.testclient import TestClient
 
 from app.api.main import app, get_db
-from app.models.system import SystemConfig, Base
+from app.models.system import System, Base
 
 
 # Test database URL
@@ -28,7 +28,7 @@ def test_db(test_engine):
     db = TestingSessionLocal()
     try:
         # Clear existing data
-        db.query(SystemConfig).delete()
+        db.query(System).delete()
         db.commit()
         yield db
     finally:
@@ -56,10 +56,10 @@ def client(test_db):
 def sample_systems(test_db):
     """Create sample systems for testing."""
     systems_data = [
-        SystemConfig(system="nes", system_name="Nintendo Entertainment System"),
-        SystemConfig(system="snes", system_name="Super Nintendo Entertainment System"),
-        SystemConfig(system="genesis", system_name="Sega Genesis"),
-        SystemConfig(system="ps1", system_name="Sony PlayStation"),
+        System(system="nes", system_name="Nintendo Entertainment System"),
+        System(system="snes", system_name="Super Nintendo Entertainment System"),
+        System(system="genesis", system_name="Sega Genesis"),
+        System(system="ps1", system_name="Sony PlayStation"),
     ]
 
     for system in systems_data:

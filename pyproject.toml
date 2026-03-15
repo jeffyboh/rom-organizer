@@ -18,6 +18,9 @@ markers = [
     "integration: Integration tests",
     "api: API tests",
 ]
+filterwarnings = [
+    "ignore:'asyncio.iscoroutinefunction' is deprecated:DeprecationWarning"
+]
 
 [tool.coverage.run]
 source = ["app"]

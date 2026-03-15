@@ -10,14 +10,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent / "app"))
 
 from app.core.database import get_db
-from app.models.system import SystemConfig
+from app.models.system import System
 
 
 def list_all_systems():
     """List all systems in the database."""
     db = get_db()
     try:
-        systems = db.query(SystemConfig).order_by(SystemConfig.system).all()
+        systems = db.query(System).order_by(System.system).all()
         print(f"Total systems: {len(systems)}\n")
         for system in systems:
             print(f"{system.system}: {system.system_name}")
@@ -29,7 +29,7 @@ def find_system(system_id: str):
     """Find a specific system by ID."""
     db = get_db()
     try:
-        system = db.query(SystemConfig).filter(SystemConfig.system == system_id).first()
+        system = db.query(System).filter(System.system == system_id).first()
         if system:
             print(f"System: {system.system}")
             print(f"Name: {system.system_name}")
@@ -43,8 +43,8 @@ def search_systems(search_term: str):
     """Search systems by name."""
     db = get_db()
     try:
-        systems = db.query(SystemConfig).filter(
-            SystemConfig.system_name.ilike(f"%{search_term}%")
+        systems = db.query(System).filter(
+            System.system_name.ilike(f"%{search_term}%")
         ).all()
 
         if systems:

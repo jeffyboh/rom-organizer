@@ -139,7 +139,7 @@ def test_search_systems_with_limit(client, sample_systems):
 def test_search_systems_default_limit(client, sample_systems):
     """Test search with default limit."""
     # Add more systems to test the limit
-    from app.models.system import SystemConfig
+    from app.models.system import System
 
     # Add systems to the test database via the client fixture's db
     # We'll need to access the db through the fixture

@@ -2,10 +2,10 @@ from fastapi import FastAPI, HTTPException, Query, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional, Generator
 from sqlalchemy.orm import Session
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.core.database import SessionLocal
-from app.models.system import SystemConfig
+from app.models.system import System
 
 # Create FastAPI app
 app = FastAPI(
@@ -31,8 +31,7 @@ class SystemResponse(BaseModel):
     system: str
     system_name: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Dependency to get database session
@@ -57,68 +56,48 @@ async def root():
 
 
 @app.get("/systems", response_model=List[SystemResponse])
-async def get_all_systems():
+async def get_all_systems(db: Session = Depends(get_db)):
     """
     Get all gaming systems.
 
     Returns a list of all systems with their IDs and names.
     """
-    from app.core.database import get_db
-    from app.models.system import SystemConfig
-
-    db = get_db()
-    try:
-        systems = db.query(SystemConfig).order_by(SystemConfig.system).all()
-        return systems
-    finally:
-        db.close()
+    systems = db.query(System).order_by(System.system).all()
+    return systems
 
 
 @app.get("/systems/search", response_model=List[SystemResponse])
 async def search_systems(
     q: str = Query(..., description="Search query for system name"),
-    limit: Optional[int] = Query(50, description="Maximum number of results to return")
+    limit: Optional[int] = Query(50, description="Maximum number of results to return"),
+    db: Session = Depends(get_db)
 ):
     """
     Search systems by name.
 
     Performs a case-insensitive search on system names.
     """
-    from app.core.database import get_db
-    from app.models.system import SystemConfig
-
     if not q or len(q.strip()) < 2:
         raise HTTPException(
             status_code=400,
             detail="Search query must be at least 2 characters long"
         )
 
-    db = get_db()
-    try:
-        systems = db.query(SystemConfig).filter(
-            SystemConfig.system_name.ilike(f"%{q}%")
-        ).limit(limit).all()
+    systems = db.query(System).filter(
+        System.system_name.ilike(f"%{q}%")
+    ).limit(limit).all()
 
-        return systems
-    finally:
-        db.close()
+    return systems
 
 
 @app.get("/systems/{system_id}", response_model=SystemResponse)
-async def get_system(system_id: str):
+async def get_system(system_id: str, db: Session = Depends(get_db)):
     """
     Get a specific system by its ID.
 
     Returns detailed information about a single system.
     """
-    from app.core.database import get_db
-    from app.models.system import SystemConfig
-
-    db = get_db()
-    try:
-        system = db.query(SystemConfig).filter(SystemConfig.system == system_id).first()
-        if not system:
-            raise HTTPException(status_code=404, detail="System not found")
-        return system
-    finally:
-        db.close()
+    system = db.query(System).filter(System.system == system_id).first()
+    if not system:
+        raise HTTPException(status_code=404, detail="System not found")
+    return system

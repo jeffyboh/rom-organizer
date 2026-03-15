@@ -60,11 +60,11 @@ The application includes a comprehensive list of gaming systems. To populate the
 python populate_systems.py
 ```
 
-This will create the `systems` table and populate it with 190+ gaming systems including consoles, computers, and arcade systems.
+This will create the `system` table and populate it with 190+ gaming systems including consoles, computers, and arcade systems.
 
 ### Database Schema
 
-- **systems** table:
+- **system** table:
   - `system` (string, primary key): Unique system identifier (e.g., "nes", "snes")
   - `system_name` (string): Human-readable system name (e.g., "Nintendo Entertainment System")
 
