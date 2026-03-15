@@ -3,8 +3,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from typing import List, Optional, Generator
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, ConfigDict
+from datetime import datetime
 
 from app.core.database import SessionLocal
+from app.models.game import Game
 from app.models.system import System
 
 # Create FastAPI app
@@ -33,6 +35,14 @@ class SystemResponse(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+class GameResponse(BaseModel):
+    game_id: int
+    system: str
+    game_name: str
+    game_path: str
+    date_added: Optional[datetime]
+
+    model_config = ConfigDict(from_attributes=True)
 
 # Dependency to get database session
 def get_db() -> Generator[Session, None, None]:
@@ -101,3 +111,18 @@ async def get_system(system_id: str, db: Session = Depends(get_db)):
     if not system:
         raise HTTPException(status_code=404, detail="System not found")
     return system
+
+# TODO: Move game endpoints to a separate router for better organization
+
+# Games endpoints
+@app.get("/games", response_model=List[GameResponse])
+async def get_all_games(db: Session = Depends(get_db)):
+    """
+    Get all gaming games.
+
+    Returns a list of all games.
+    """
+    games = db.query(Game).all()
+    return games
+
+

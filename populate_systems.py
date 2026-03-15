@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.core.database import create_tables, get_db
 from app.models.system import System
-
+from app.models.game import Game
 
 # System data - system_id: system_name
 SYSTEMS_DATA = """
@@ -237,8 +237,8 @@ def populate_systems():
 
         # Insert new data
         for system, system_name in systems:
-            system_config = System(system=system, system_name=system_name)
-            db.add(system_config)
+            system_data = System(system=system, system_name=system_name)
+            db.add(system_data)
 
         db.commit()
         print(f"Successfully populated {len(systems)} systems.")

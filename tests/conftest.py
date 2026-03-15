@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from fastapi.testclient import TestClient
 
 from app.api.main import app, get_db
+from app.models.game import Game
 from app.models.system import System, Base
 
 
@@ -29,6 +30,7 @@ def test_db(test_engine):
     try:
         # Clear existing data
         db.query(System).delete()
+        #db.query(Game).delete()
         db.commit()
         yield db
     finally:
@@ -67,3 +69,19 @@ def sample_systems(test_db):
     test_db.commit()
 
     return systems_data
+
+@pytest.fixture(scope="function")
+def sample_games(test_db):
+    """Create sample games for testing."""
+    games_data = [
+        Game(game_path="/tmp/super_mario_bros.nes", game_name="Super Mario Bros.", system="nes"),
+        Game(game_path="/tmp/zelda.nes", game_name="The Legend of Zelda", system="nes"),
+        Game(game_path="/tmp/super_mario_world.snes", game_name="Super Mario World", system="snes"),
+        Game(game_path="/tmp/sonic.zip", game_name="Sonic the Hedgehog", system="genesis"),
+    ]
+
+    for game in games_data:
+        test_db.add(game)
+    test_db.commit()
+
+    return games_data

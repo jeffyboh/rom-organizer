@@ -1,8 +1,7 @@
 
 from sqlalchemy import Column, String
-from sqlalchemy.ext.declarative import declarative_base
+from app.core.database import Base
 
-Base = declarative_base()
 
 class System(Base):
     __tablename__ = 'system'

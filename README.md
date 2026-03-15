@@ -60,7 +60,7 @@ The application includes a comprehensive list of gaming systems. To populate the
 python populate_systems.py
 ```
 
-This will create the `system` table and populate it with 190+ gaming systems including consoles, computers, and arcade systems.
+This will create the `system` table and populate it with 190+ gaming systems including consoles, computers, and arcade systems. Other necessary tables will also be created.
 
 ### Database Schema
 
@@ -213,7 +213,8 @@ tests/
 ├── __init__.py
 ├── conftest.py          # Shared fixtures and configuration
 ├── test_root.py         # Tests for root API endpoint
-└── test_systems.py      # Tests for systems API endpoints
+├── test_systems.py      # Tests for systems API endpoints
+└── test_games.py        # Tests for games API endpoints
 ```
 
 ### Test Fixtures
@@ -222,6 +223,7 @@ tests/
 - **`test_db`**: Provides a database session for each test function
 - **`client`**: FastAPI TestClient for making API requests
 - **`sample_systems`**: Pre-populated test data with sample gaming systems
+- **`sample_games`**: Pre-populated test data with sample game titles
 
 ### Writing New Tests
 
